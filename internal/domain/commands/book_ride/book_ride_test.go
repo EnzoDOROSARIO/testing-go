@@ -4,14 +4,18 @@ import (
 	"testing"
 
 	"github.com/EnzoDOROSARIO/uber-go/internal/domain/commands/book_ride"
+	"github.com/EnzoDOROSARIO/uber-go/internal/domain/model/ride_booking"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestBasicRideBooking(t *testing.T) {
-	expectedRide := "ride"
 	bookRide := book_ride.NewRideBooker()
 
-	actualRide := bookRide.Execute()
+	actualRide := bookRide.Execute("rideId")
 
-	assert.Equal(t, expectedRide, actualRide)
+	expectedSnapshot := ride_booking.RideSnapshot{
+		ID: "rideId",
+	}
+
+	assert.Equal(t, expectedSnapshot, actualRide.ToSnapshot())
 }

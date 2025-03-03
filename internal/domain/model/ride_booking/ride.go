@@ -1,17 +1,41 @@
 package ride_booking
 
 type Ride struct {
-	id string
+	id        string
+	riderId   string
+	departure string
+	arrival   string
+	price     float64
+	status    string
 }
 
 type RideSnapshot struct {
-	ID string
+	ID        string
+	RiderId   string
+	Departure string
+	Arrival   string
+	Price     float64
+	Status    string
 }
 
-func NewRide(id string) *Ride {
-	return &Ride{id: id}
+func Book(id string, riderId string, departure string, arrival string) *Ride {
+	return &Ride{
+		id:        id,
+		riderId:   riderId,
+		departure: departure,
+		arrival:   arrival,
+		price:     30,
+		status:    "WAITING_FOR_DRIVER",
+	}
 }
 
 func (r *Ride) ToSnapshot() RideSnapshot {
-	return RideSnapshot{ID: r.id}
+	return RideSnapshot{
+		ID:        r.id,
+		RiderId:   r.riderId,
+		Departure: r.departure,
+		Arrival:   r.arrival,
+		Price:     r.price,
+		Status:    r.status,
+	}
 }

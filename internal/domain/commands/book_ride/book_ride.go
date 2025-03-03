@@ -8,6 +8,11 @@ func NewRideBooker() *RideBooker {
 
 type RideBooker struct{}
 
-func (b *RideBooker) Execute(rideId string) *ride_booking.Ride {
-	return ride_booking.NewRide(rideId)
+func (b *RideBooker) Execute(
+	rideId string,
+	riderId string,
+	departure string,
+	arrival string,
+) *ride_booking.Ride {
+	return ride_booking.Book(rideId, riderId, departure, arrival)
 }

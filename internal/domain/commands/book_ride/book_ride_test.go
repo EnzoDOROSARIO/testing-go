@@ -3,6 +3,7 @@ package book_ride_test
 import (
 	"testing"
 
+	"github.com/EnzoDOROSARIO/uber-go/internal/adapters/secondary/ride_repository"
 	"github.com/EnzoDOROSARIO/uber-go/internal/adapters/secondary/trip_scanner"
 	"github.com/EnzoDOROSARIO/uber-go/internal/domain/commands/book_ride"
 	"github.com/EnzoDOROSARIO/uber-go/internal/domain/model/ride_booking"
@@ -19,10 +20,13 @@ func TestBasicRideBooking(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
+		rideRepository := ride_repository.NewFakeRideRepository()
 		tripScanner := trip_scanner.NewFakeTripScanner(tc.distance)
-		bookRide := book_ride.NewRideBooker(tripScanner)
+		bookRide := book_ride.NewRideBooker(tripScanner, rideRepository)
 
-		actualRide := bookRide.Execute("rideId", "riderId", "PARIS_ADDRESS", "PARIS_ADDRESS")
+		bookRide.Execute("rideId", "riderId", "PARIS_ADDRESS", "PARIS_ADDRESS")
+
+		actualRide := rideRepository.Rides[0]
 
 		expectedSnapshot := ride_booking.RideSnapshot{
 			ID:        "rideId",
@@ -32,7 +36,6 @@ func TestBasicRideBooking(t *testing.T) {
 			Price:     tc.expectedPrice,
 			Status:    "WAITING_FOR_DRIVER",
 		}
-
 		assert.Equal(t, expectedSnapshot, actualRide.ToSnapshot())
 	}
 }

@@ -1,6 +1,6 @@
 package ride_repository
 
-import "github.com/EnzoDOROSARIO/uber-go/internal/domain/model/ride_booking"
+import "github.com/EnzoDOROSARIO/testing-go/internal/domain/model/ride_booking"
 
 type FakeRideRepository struct {
 	Rides []ride_booking.Ride

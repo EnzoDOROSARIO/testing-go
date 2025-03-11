@@ -3,10 +3,10 @@ package book_ride_test
 import (
 	"testing"
 
-	"github.com/EnzoDOROSARIO/uber-go/internal/adapters/secondary/ride_repository"
-	"github.com/EnzoDOROSARIO/uber-go/internal/adapters/secondary/trip_scanner"
-	"github.com/EnzoDOROSARIO/uber-go/internal/domain/commands/book_ride"
-	"github.com/EnzoDOROSARIO/uber-go/internal/domain/model/ride_booking"
+	"github.com/EnzoDOROSARIO/testing-go/internal/adapters/secondary/ride_repository"
+	"github.com/EnzoDOROSARIO/testing-go/internal/adapters/secondary/trip_scanner"
+	"github.com/EnzoDOROSARIO/testing-go/internal/domain/commands/book_ride"
+	"github.com/EnzoDOROSARIO/testing-go/internal/domain/model/ride_booking"
 	"github.com/stretchr/testify/assert"
 )
 

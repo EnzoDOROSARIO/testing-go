@@ -1,6 +1,6 @@
 package book_ride
 
-import "github.com/EnzoDOROSARIO/uber-go/internal/domain/model/ride_booking"
+import "github.com/EnzoDOROSARIO/testing-go/internal/domain/model/ride_booking"
 
 func NewRideBooker(
 	tripScanner TripScanner,

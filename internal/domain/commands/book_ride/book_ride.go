@@ -4,11 +4,11 @@ import "github.com/EnzoDOROSARIO/testing-go/internal/domain/model/ride_booking"
 
 func NewRideBooker(
 	tripScanner TripScanner,
-	rideRepository RideRepository,
+	riderRepository RiderRepository,
 ) *RideBooker {
 	return &RideBooker{
-		tripScanner:    tripScanner,
-		rideRepository: rideRepository,
+		tripScanner:     tripScanner,
+		riderRepository: riderRepository,
 	}
 }
 
@@ -17,28 +17,29 @@ type TripScanner interface {
 	InParis(address string) bool
 }
 
-type RideRepository interface {
-	Save(ride *ride_booking.Ride)
+type RiderRepository interface {
+	Save(ride *ride_booking.Rider)
+	ById(id string) *ride_booking.Rider
 }
 
 type RideBooker struct {
-	tripScanner    TripScanner
-	rideRepository RideRepository
+	tripScanner     TripScanner
+	riderRepository RiderRepository
 }
 
 func (b *RideBooker) Execute(
-	rideId string,
 	riderId string,
 	departure string,
 	arrival string,
 ) {
+	rider := b.riderRepository.ById(riderId)
 	distance := b.tripScanner.DistanceBetween(departure, arrival)
 	departureInParis := b.tripScanner.InParis(departure)
 	arrivalInParis := b.tripScanner.InParis(arrival)
 	basePrice := calculateBasePrice(departureInParis, arrivalInParis)
 	price := basePrice + float64(distance)*0.5
-	ride := ride_booking.Book(rideId, riderId, departure, arrival, price)
-	b.rideRepository.Save(ride)
+	rider.Book("123abc", departure, arrival, price)
+	b.riderRepository.Save(rider)
 }
 
 func calculateBasePrice(departureInParis bool, arrivalInParis bool) float64 {

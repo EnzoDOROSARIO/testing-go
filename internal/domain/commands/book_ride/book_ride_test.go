@@ -1,9 +1,9 @@
 package book_ride_test
 
 import (
+	"github.com/EnzoDOROSARIO/testing-go/internal/adapters/secondary/rider_repository"
 	"testing"
 
-	"github.com/EnzoDOROSARIO/testing-go/internal/adapters/secondary/ride_repository"
 	"github.com/EnzoDOROSARIO/testing-go/internal/adapters/secondary/trip_scanner"
 	"github.com/EnzoDOROSARIO/testing-go/internal/domain/commands/book_ride"
 	"github.com/EnzoDOROSARIO/testing-go/internal/domain/model/ride_booking"
@@ -57,25 +57,25 @@ func TestBasicRideBooking(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			t.Parallel()
+			sampleRider := ride_booking.NewRider("riderId")
 
-			rideRepository := ride_repository.NewFakeRideRepository()
+			riderRepository := rider_repository.NewFakeRiderRepository()
 			tripScanner := trip_scanner.NewFakeTripScanner(tc.distance)
-			bookRide := book_ride.NewRideBooker(tripScanner, rideRepository)
+			bookRide := book_ride.NewRideBooker(tripScanner, riderRepository)
 
-			bookRide.Execute("rideId", "riderId", tc.departure, tc.arrival)
+			riderRepository.Save(sampleRider)
+			bookRide.Execute("riderId", tc.departure, tc.arrival)
 
-			actualRide := rideRepository.Rides[0]
-
+			rider := riderRepository.ById("riderId")
 			expectedSnapshot := ride_booking.RideSnapshot{
-				ID:        "rideId",
+				ID:        "123abc",
 				RiderId:   "riderId",
 				Departure: tc.departure,
 				Arrival:   tc.arrival,
 				Price:     tc.expectedPrice,
 				Status:    "WAITING_FOR_DRIVER",
 			}
-			assert.Equal(t, expectedSnapshot, actualRide.ToSnapshot())
+			assert.Equal(t, expectedSnapshot, rider.ToSnapshot().CurrentRide)
 		})
 	}
 }

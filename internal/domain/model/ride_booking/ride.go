@@ -18,7 +18,13 @@ type RideSnapshot struct {
 	Status    string
 }
 
-func Book(id string, riderId string, departure string, arrival string, price float64) *Ride {
+func BookRide(
+	id string,
+	riderId string,
+	departure string,
+	arrival string,
+	price float64,
+) *Ride {
 	return &Ride{
 		id:        id,
 		riderId:   riderId,

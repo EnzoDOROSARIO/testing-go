@@ -46,6 +46,13 @@ func TestBasicRideBooking(t *testing.T) {
 			distance:      0,
 			expectedPrice: 50.0,
 		},
+		{
+			name:          "External -> External | 0km",
+			departure:     "EXTERNAL_ADDRESS",
+			arrival:       "EXTERNAL_ADDRESS",
+			distance:      0,
+			expectedPrice: 100.0,
+		},
 	}
 
 	for _, tc := range testCases {

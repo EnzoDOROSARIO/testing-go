@@ -42,11 +42,21 @@ func (b *RideBooker) Execute(
 }
 
 func calculateBasePrice(departureInParis bool, arrivalInParis bool) float64 {
-	if departureInParis && arrivalInParis {
-		return 30.0
+	const (
+		ParisToParisPrice       = 30.0
+		ParisToExternalPrice    = 20.0
+		ExternalToParisPrice    = 50.0
+		ExternalToExternalPrice = 100.0
+	)
+
+	switch {
+	case departureInParis && arrivalInParis:
+		return ParisToParisPrice
+	case departureInParis:
+		return ParisToExternalPrice
+	case arrivalInParis:
+		return ExternalToParisPrice
+	default:
+		return ExternalToExternalPrice
 	}
-	if departureInParis {
-		return 20.0
-	}
-	return 50.0
 }

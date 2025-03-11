@@ -14,6 +14,7 @@ func NewRideBooker(
 
 type TripScanner interface {
 	DistanceBetween(departure string, arrival string) int
+	InParis(address string) bool
 }
 
 type RideRepository interface {
@@ -32,7 +33,15 @@ func (b *RideBooker) Execute(
 	arrival string,
 ) {
 	distance := b.tripScanner.DistanceBetween(departure, arrival)
-	price := 30.0 + float64(distance)*0.5
+	departureInParis := b.tripScanner.InParis(departure)
+	arrivalInParis := b.tripScanner.InParis(arrival)
+	var basePrice float64
+	if departureInParis && arrivalInParis {
+		basePrice = 30.0
+	} else {
+		basePrice = 20.0
+	}
+	price := basePrice + float64(distance)*0.5
 	ride := ride_booking.Book(rideId, riderId, departure, arrival, price)
 	b.rideRepository.Save(ride)
 }

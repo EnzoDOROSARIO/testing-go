@@ -35,11 +35,9 @@ func (b *RideBooker) Execute(
 	distance := b.tripScanner.DistanceBetween(departure, arrival)
 	departureInParis := b.tripScanner.InParis(departure)
 	arrivalInParis := b.tripScanner.InParis(arrival)
-	var basePrice float64
+	basePrice := 20.0
 	if departureInParis && arrivalInParis {
 		basePrice = 30.0
-	} else {
-		basePrice = 20.0
 	}
 	price := basePrice + float64(distance)*0.5
 	ride := ride_booking.Book(rideId, riderId, departure, arrival, price)
